@@ -1,0 +1,4 @@
+<resources>
+
+    <style name="Theme.DeliveryTracking" parent="Theme.MaterialComponents.Light" />
+</resources>

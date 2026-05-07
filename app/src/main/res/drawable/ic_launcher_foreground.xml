@@ -1,0 +1,40 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Delivery Truck Body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M27.5,52.5h35v25h-35z" />
+
+    <!-- Delivery Truck Cab -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M63.5,59.5h12l5,6v12h-17z" />
+
+    <!-- Cab Window -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M65.5,61.5h8l3,4v7h-11z" />
+
+    <!-- Wheels -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M37.5,77.5m-4,0a4,4 0 1,1 8,0a4,4 0 1,1 -8,0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M69.5,77.5m-4,0a4,4 0 1,1 8,0a4,4 0 1,1 -8,0" />
+
+    <!-- Tracking Pin -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M51.5,26.5c-7,0 -13,6 -13,13c0,10 13,26 13,26s13,-16 13,-26c0,-7 -6,-13 -13,-13z" />
+
+    <!-- Pin Hole -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M51.5,39.5m-4,0a4,4 0 1,1 8,0a4,4 0 1,1 -8,0" />
+
+</vector>
