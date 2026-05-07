@@ -2,6 +2,7 @@ package com.treceniovin.deliverytracking
 
 import android.app.Application
 import com.treceniovin.deliverytracking.di.appModule
+import com.treceniovin.deliverytracking.di.navigationModule
 import com.treceniovin.deliverytracking.di.networkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -14,7 +15,7 @@ class MainApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
-            modules(listOf(networkModule, appModule))
+            modules(listOf(networkModule, appModule, navigationModule))
         }
     }
 }

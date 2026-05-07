@@ -1,15 +1,23 @@
 package com.treceniovin.deliverytracking.di
 
 import com.treceniovin.deliverytracking.data.OrderRepository
-import com.treceniovin.deliverytracking.domain.usecase.*
+import com.treceniovin.deliverytracking.domain.usecase.CreateOrderUseCase
+import com.treceniovin.deliverytracking.domain.usecase.GetOrderDetailsUseCase
+import com.treceniovin.deliverytracking.domain.usecase.GetOrdersUseCase
+import com.treceniovin.deliverytracking.domain.usecase.GetRegisteredUserUseCase
+import com.treceniovin.deliverytracking.domain.usecase.ObserveOrderUseCase
+import com.treceniovin.deliverytracking.domain.usecase.RefreshOrdersUseCase
+import com.treceniovin.deliverytracking.domain.usecase.RegisterUserUseCase
+import com.treceniovin.deliverytracking.domain.usecase.UpdateOrderStatusUseCase
 import com.treceniovin.deliverytracking.ui.dashboard.DashboardViewModel
 import com.treceniovin.deliverytracking.ui.details.OrderDetailsViewModel
+import com.treceniovin.deliverytracking.ui.navigation.UserRole
 import com.treceniovin.deliverytracking.ui.orderplacement.OrderPlacementViewModel
 import com.treceniovin.deliverytracking.ui.registration.RegistrationViewModel
-import com.treceniovin.deliverytracking.ui.navigation.UserRole
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import org.koin.android.ext.koin.androidContext
 
 val appModule = module {
     // Data Layer

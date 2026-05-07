@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.compose.navigation3)
 
     //Ktor
     implementation(libs.ktor.client.core)
