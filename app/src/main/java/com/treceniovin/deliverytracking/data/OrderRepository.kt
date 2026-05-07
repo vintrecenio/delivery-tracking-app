@@ -6,15 +6,15 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.treceniovin.deliverytracking.data.mapper.toDomain
+import com.treceniovin.deliverytracking.data.mapper.toDto
 import com.treceniovin.deliverytracking.data.model.Order
 import com.treceniovin.deliverytracking.data.model.OrderStatus
 import com.treceniovin.deliverytracking.data.model.User
 import com.treceniovin.deliverytracking.data.remote.DeliveryApi
-import com.treceniovin.deliverytracking.ui.navigation.UserRole
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
@@ -38,11 +38,11 @@ class OrderRepository(
 
     suspend fun refreshOrders() {
         val remoteOrders = api.getOrders()
-        _orders.value = remoteOrders
+        _orders.value = remoteOrders.map { it.toDomain() }
     }
 
-    suspend fun getOrderById(id: String): Order? {
-        val remoteOrder = api.getOrderById(id)
+    suspend fun getOrderById(id: String): Order {
+        val remoteOrder = api.getOrderById(id).toDomain()
         // Update in-memory cache to keep observers in sync
         val currentList = _orders.value.toMutableList()
         val index = currentList.indexOfFirst { it.id == id }
@@ -56,7 +56,7 @@ class OrderRepository(
     }
 
     suspend fun updateOrderStatus(id: String, status: OrderStatus) {
-        val updatedOrder = api.updateOrderStatus(id, status)
+        val updatedOrder = api.updateOrderStatus(id, status.name).toDomain()
         // Update in-memory cache
         val currentList = _orders.value.toMutableList()
         val index = currentList.indexOfFirst { it.id == id }
@@ -67,13 +67,13 @@ class OrderRepository(
     }
 
     suspend fun createOrder(order: Order) {
-        val createdOrder = api.createOrder(order)
+        val createdOrder = api.createOrder(order.toDto()).toDomain()
         // Update in-memory cache
         _orders.value += createdOrder
     }
 
     suspend fun registerUser(user: User) {
-        val remoteUser = api.registerUser(user)
+        val remoteUser = api.registerUser(user.toDto()).toDomain()
         context.dataStore.edit { prefs ->
             prefs[USER_KEY] = Json.encodeToString(User.serializer(), remoteUser)
         }
