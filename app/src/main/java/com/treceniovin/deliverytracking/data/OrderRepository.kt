@@ -42,21 +42,17 @@ class OrderRepository(
     }
 
     suspend fun getOrderById(id: String): Order? {
-        return try {
-            val remoteOrder = api.getOrderById(id)
-            // Update in-memory cache to keep observers in sync
-            val currentList = _orders.value.toMutableList()
-            val index = currentList.indexOfFirst { it.id == id }
-            if (index != -1) {
-                currentList[index] = remoteOrder
-            } else {
-                currentList.add(remoteOrder)
-            }
-            _orders.value = currentList
-            remoteOrder
-        } catch (e: Exception) {
-            null
+        val remoteOrder = api.getOrderById(id)
+        // Update in-memory cache to keep observers in sync
+        val currentList = _orders.value.toMutableList()
+        val index = currentList.indexOfFirst { it.id == id }
+        if (index != -1) {
+            currentList[index] = remoteOrder
+        } else {
+            currentList.add(remoteOrder)
         }
+        _orders.value = currentList
+        return remoteOrder
     }
 
     suspend fun updateOrderStatus(id: String, status: OrderStatus) {

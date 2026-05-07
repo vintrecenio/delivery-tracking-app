@@ -6,8 +6,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ fun DashboardScreen(
     uiState: DashboardUiState,
     role: UserRole,
     onFilterSelected: (OrderStatus?) -> Unit,
+    onRefresh: () -> Unit,
     onOrderClick: (String) -> Unit,
     onAddOrderClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -35,8 +37,8 @@ fun DashboardScreen(
             TopAppBar(
                 title = { Text(if (role == UserRole.CUSTOMER) "My Orders" else "Deliveries", fontWeight = FontWeight.Bold) },
                 actions = {
-                    IconButton(onClick = { /* Toggle filter menu if needed */ }) {
-                        Icon(Icons.Default.FilterList, contentDescription = "Filter")
+                    IconButton(onClick = onRefresh) {
+                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
                     }
                 }
             )
@@ -65,25 +67,31 @@ fun DashboardScreen(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
-            if (uiState.isLoading) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            } else if (uiState.orders.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No orders found", style = MaterialTheme.typography.bodyLarge)
-                }
-            } else {
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(uiState.orders, key = { it.id }) { order ->
-                        OrderCard(
-                            order = order,
-                            onClick = { onOrderClick(order.id) }
-                        )
+            PullToRefreshBox(
+                isRefreshing = uiState.isRefreshing,
+                onRefresh = onRefresh,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                if (uiState.isLoading) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                } else if (uiState.orders.isEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("No orders found", style = MaterialTheme.typography.bodyLarge)
+                    }
+                } else {
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(uiState.orders, key = { it.id }) { order ->
+                            OrderCard(
+                                order = order,
+                                onClick = { onOrderClick(order.id) }
+                            )
+                        }
                     }
                 }
             }
@@ -207,6 +215,7 @@ fun DashboardPreview() {
             ),
             role = UserRole.CUSTOMER,
             onFilterSelected = {},
+            onRefresh = {},
             onOrderClick = {},
             onAddOrderClick = {}
         )

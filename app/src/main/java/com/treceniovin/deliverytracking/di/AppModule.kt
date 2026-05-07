@@ -15,7 +15,6 @@ import com.treceniovin.deliverytracking.ui.navigation.UserRole
 import com.treceniovin.deliverytracking.ui.orderplacement.OrderPlacementViewModel
 import com.treceniovin.deliverytracking.ui.registration.RegistrationViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -34,7 +33,7 @@ val appModule = module {
     factory { ObserveOrderUseCase(get()) }
 
     // UI Layer (ViewModels)
-    viewModel { DashboardViewModel(get(), get()) }
+    viewModel { DashboardViewModel(get(), get(), get()) }
     viewModel { OrderPlacementViewModel(get(), get()) }
     viewModel { (orderId: String) -> OrderDetailsViewModel(orderId, get(), get(), get()) }
     viewModel { (role: UserRole) -> RegistrationViewModel(role, get()) }

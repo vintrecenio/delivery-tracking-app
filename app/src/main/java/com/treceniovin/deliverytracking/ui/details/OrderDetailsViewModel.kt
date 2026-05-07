@@ -52,7 +52,7 @@ class OrderDetailsViewModel(
         viewModelScope.launch {
             try {
                 // Ensure we have the initial data from the server
-                getOrderDetailsUseCase(orderId)
+                getOrderDetailsUseCase(orderId).first()
             } catch (e: Exception) {
                 _error.value = e.message ?: "Failed to load order"
             }

@@ -67,12 +67,10 @@ val navigationModule = module {
         val viewModel: DashboardViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        if (destination.role == UserRole.DRIVER) {
-            DisposableEffect(Unit) {
-                PollOrdersWorker.enqueueNext(context)
-                onDispose {
-                    PollOrdersWorker.cancel(context)
-                }
+        DisposableEffect(Unit) {
+            PollOrdersWorker.enqueueNext(context)
+            onDispose {
+                PollOrdersWorker.cancel(context)
             }
         }
 
@@ -80,6 +78,7 @@ val navigationModule = module {
             uiState = uiState,
             role = destination.role,
             onFilterSelected = viewModel::filterByStatus,
+            onRefresh = viewModel::refreshOrders,
             onOrderClick = { orderId ->
                 navigator.navigate(
                     Destination.OrderDetails(
@@ -126,7 +125,7 @@ val navigationModule = module {
         OrderDetailsScreen(
             uiState = uiState,
             role = destination.role,
-            onStatusUpdate = viewModel::updateStatus,
+            onStatusUpdate = { status -> viewModel.updateStatus(status) },
             onBackClick = { navigator.back() }
         )
     }

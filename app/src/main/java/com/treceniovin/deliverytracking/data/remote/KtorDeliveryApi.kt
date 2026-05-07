@@ -44,22 +44,14 @@ class KtorDeliveryApi(private val client: HttpClient) : DeliveryApi {
     }
 
     override suspend fun createOrder(order: Order): Order {
-        return try {
-            val response = client.post("$baseUrl/orders") {
-                contentType(ContentType.Application.Json)
-                setBody(order)
-            }
-            if (response.status.isSuccess()) {
-                response.body()
-            } else {
-                // If the mock API is down/returning 500, we'll still succeed locally for the demo
-                // but throw a specific error that the ViewModel can handle or ignore.
-                // For a robust "Mock" experience, we'll just return the order we tried to create.
-                order 
-            }
-        } catch (e: Exception) {
-            // Handle NoTransformationFoundException or network errors
-            order
+        val response = client.post("$baseUrl/orders") {
+            contentType(ContentType.Application.Json)
+            setBody(order)
+        }
+        return if (response.status.isSuccess()) {
+            response.body()
+        } else {
+            throw Exception("Failed to create order on server (Status: ${response.status})")
         }
     }
 

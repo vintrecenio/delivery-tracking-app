@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.PendingActions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,7 +50,8 @@ fun OrderDetailsScreen(
                 }
             )
         },
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        snackbarHost = { SnackbarHost(hostState = remember { SnackbarHostState() }) }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -75,6 +77,22 @@ fun OrderDetailsScreen(
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
+                    // Show error if any (for updates)
+                    if (uiState.error != null) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.errorContainer,
+                            contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                            shape = MaterialTheme.shapes.medium,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = uiState.error,
+                                modifier = Modifier.padding(12.dp),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+
                     // Progress UI - Only visible for CUSTOMER role
                     if (role == UserRole.CUSTOMER) {
                         StatusProgressIndicator(currentStatus = order.status)
