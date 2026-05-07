@@ -94,7 +94,7 @@ fun OrderDetailsScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Order #${order.id.take(8).uppercase()}",
+                                    text = "Order #${order.orderId.take(8).uppercase()}",
                                     style = MaterialTheme.typography.labelLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -334,9 +334,11 @@ fun OrderDetailsPreview() {
         OrderDetailsScreen(
             uiState = OrderDetailsUiState(
                 order = Order(
-                    id = "12345678",
-                    customerName = "Alice Johnson",
-                    deliveryAddress = "1600 Amphitheatre Pkwy, Mountain View, CA",
+                    id = "1",
+                    orderId = "12345678",
+                    customerId = "1234",
+                    customerName = "Customer 1",
+                    deliveryAddress = "123 Main St",
                     status = OrderStatus.IN_TRANSIT,
                     description = "Ring doorbell twice please."
                 )

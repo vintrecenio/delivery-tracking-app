@@ -22,7 +22,7 @@ class DashboardViewModel(
 ) : ViewModel() {
 
     private val _selectedStatus = MutableStateFlow<OrderStatus?>(null)
-    
+
     val uiState: StateFlow<DashboardUiState> = combine(
         getOrdersUseCase(),
         _selectedStatus

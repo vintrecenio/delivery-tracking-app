@@ -33,7 +33,7 @@ fun DashboardScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Deliveries (${role.name.lowercase().capitalize()})", fontWeight = FontWeight.Bold) },
+                title = { Text(if (role == UserRole.CUSTOMER) "My Orders" else "Deliveries", fontWeight = FontWeight.Bold) },
                 actions = {
                     IconButton(onClick = { /* Toggle filter menu if needed */ }) {
                         Icon(Icons.Default.FilterList, contentDescription = "Filter")
@@ -200,9 +200,9 @@ fun DashboardPreview() {
         DashboardScreen(
             uiState = DashboardUiState(
                 orders = listOf(
-                    Order("1", "John Doe", "123 Main St", OrderStatus.PENDING, "Fragile item"),
-                    Order("2", "Jane Smith", "456 Oak Ave", OrderStatus.IN_TRANSIT, ""),
-                    Order("3", "Bob Wilson", "789 Pine Rd", OrderStatus.DELIVERED, "Leave at door")
+                    Order("1", orderId = "11111", customerId = "1234", "Customer 1", "123 Main St", OrderStatus.PENDING, "Fragile item"),
+                    Order("2", orderId = "22222", customerId = "2345", "Customer 2", "456 Oak Ave", OrderStatus.IN_TRANSIT, ""),
+                    Order("3", orderId = "33333", customerId = "3456", "Customer 3", "789 Pine Rd", OrderStatus.DELIVERED, "Leave at door")
                 )
             ),
             role = UserRole.CUSTOMER,

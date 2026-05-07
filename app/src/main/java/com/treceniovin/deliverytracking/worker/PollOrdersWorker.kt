@@ -36,7 +36,7 @@ class PollOrdersWorker(
                 .build()
 
             val workRequest = OneTimeWorkRequestBuilder<PollOrdersWorker>()
-                .setInitialDelay(30, TimeUnit.SECONDS)
+                .setInitialDelay(5, TimeUnit.SECONDS)
                 .setConstraints(constraints)
                 .build()
 

@@ -53,7 +53,7 @@ class RegistrationViewModel(
             _uiState.value = currentState.copy(isRegistering = true, error = null)
             try {
                 val user = User(
-                    id = UUID.randomUUID().toString(),
+                    uid = UUID.randomUUID().toString(),
                     name = currentState.name,
                     address = currentState.address,
                     role = role

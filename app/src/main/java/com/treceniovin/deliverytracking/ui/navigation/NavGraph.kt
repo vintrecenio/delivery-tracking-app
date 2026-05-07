@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavEntry
@@ -115,14 +116,24 @@ fun NavGraph() {
                 }
                 is Destination.OrderDetails -> {
                     NavEntry(key as NavKey) {
-                        val viewModel: OrderDetailsViewModel = koinViewModel { parametersOf(key.orderId) }
+
+                        val viewModel: OrderDetailsViewModel = koinViewModel(
+                            key = "order-${key.orderId}"
+                        ) {
+                            parametersOf(key.orderId)
+                        }
+
                         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
                         OrderDetailsScreen(
                             uiState = uiState,
                             role = key.role,
                             onStatusUpdate = viewModel::updateStatus,
-                            onBackClick = { if (backStack.size > 1) backStack.removeAt(backStack.size - 1) }
+                            onBackClick = {
+                                if (backStack.size > 1) {
+                                    backStack.removeAt(backStack.size - 1)
+                                }
+                            }
                         )
                     }
                 }

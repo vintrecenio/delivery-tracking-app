@@ -48,7 +48,9 @@ class OrderPlacementViewModel(
                 val user = getRegisteredUserUseCase().first() ?: throw Exception("User not registered")
                 
                 val newOrder = Order(
-                    id = UUID.randomUUID().toString(),
+                    id = "",
+                    orderId = UUID.randomUUID().toString(),
+                    customerId = user.uid,
                     customerName = user.name,
                     deliveryAddress = user.address,
                     status = OrderStatus.PENDING,
@@ -56,6 +58,7 @@ class OrderPlacementViewModel(
                 )
                 createOrderUseCase(newOrder)
                 _events.emit(OrderPlacementEvent.Success)
+                _uiState.value = currentState.copy(isSubmitting = false, error = null)
             } catch (e: Exception) {
                 val userFriendlyMessage = when {
                     e.message?.contains("500") == true -> "Server is currently busy. Your order was saved locally."
