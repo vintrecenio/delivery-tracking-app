@@ -3,6 +3,7 @@ package com.treceniovin.deliverytracking.ui.navigation
 import kotlinx.serialization.Serializable
 import androidx.navigation3.runtime.NavKey
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.compositionLocalOf
 
 @Serializable
 enum class UserRole {
@@ -42,3 +43,5 @@ class Navigator(private val backStack: MutableList<NavKey>) {
 val LocalNavigator = staticCompositionLocalOf<Navigator> {
     error("No Navigator provided")
 }
+
+val LocalBackButtonVisibility = compositionLocalOf { true }

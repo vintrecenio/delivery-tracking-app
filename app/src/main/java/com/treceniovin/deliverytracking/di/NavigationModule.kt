@@ -1,5 +1,7 @@
 package com.treceniovin.deliverytracking.di
 
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,7 +28,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import org.koin.dsl.navigation3.navigation
 
-@OptIn(KoinExperimentalAPI::class)
+@OptIn(KoinExperimentalAPI::class, ExperimentalMaterial3AdaptiveApi::class)
 val navigationModule = module {
     // Navigation
     navigation<Destination.RoleSelection> {
@@ -61,7 +63,9 @@ val navigationModule = module {
         )
     }
 
-    navigation<Destination.Dashboard> { destination ->
+    navigation<Destination.Dashboard>(
+        metadata = ListDetailSceneStrategy.listPane()
+    ) { destination ->
         val navigator = LocalNavigator.current
         val context = LocalContext.current
         val viewModel: DashboardViewModel = koinViewModel()
@@ -112,7 +116,9 @@ val navigationModule = module {
         )
     }
 
-    navigation<Destination.OrderDetails> { destination ->
+    navigation<Destination.OrderDetails>(
+        metadata = ListDetailSceneStrategy.detailPane()
+    ) { destination ->
         val navigator = LocalNavigator.current
         val viewModel: OrderDetailsViewModel = koinViewModel(
             key = "order-${destination.orderId}"

@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.treceniovin.deliverytracking.data.model.Order
 import com.treceniovin.deliverytracking.data.model.OrderStatus
+import com.treceniovin.deliverytracking.ui.navigation.LocalBackButtonVisibility
 import com.treceniovin.deliverytracking.ui.navigation.UserRole
 import com.treceniovin.deliverytracking.ui.theme.DeliveryTrackingTheme
 
@@ -39,13 +40,16 @@ fun OrderDetailsScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val showBackButton = LocalBackButtonVisibility.current
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Order Details", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    if (showBackButton) {
+                        IconButton(onClick = onBackClick) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
                     }
                 }
             )
